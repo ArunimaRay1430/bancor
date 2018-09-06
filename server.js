@@ -169,8 +169,8 @@ app.get('/getsmarttoken', async function (req, res) {
         smartTokenArray.push(tokenObj)
       }
     })
-    console.log('rel token', relTokenArray)
-    res.status(200).send(relTokenArray);
+    console.log('smart token', smartTokenArray)
+    res.status(200).send(smartTokenArray);
 
   } catch (err) {
     console.log("inside catch",err)
