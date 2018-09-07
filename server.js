@@ -1,7 +1,10 @@
 
 const express = require('express');
 const bodyParser = require('body-parser')
+var cors = require('cors')
+
 const app = express();
+app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -160,7 +163,7 @@ app.get('/getsmarttoken', async function (req, res) {
     resultR.rows.forEach((rowR) => {
       if (rowR.type == 0) {
         let tokenObj = {};
-        console.log('row',rowR)
+        console.log('row', rowR)
         let res = rowR.supply.split(" ");
         let res3 = rowR.connector1.split(" ");
         let liquidDepth = rowR.supply;
@@ -169,7 +172,7 @@ app.get('/getsmarttoken', async function (req, res) {
         tokenObj.liquidity = liquidDepth
         tokenObj.symbol = res[1];
         tokenObj.marketCap = marketCap;
-        console.log("tokenbobj",tokenObj)
+        console.log("tokenbobj", tokenObj)
         smartTokenArray.push(tokenObj)
       }
     })
@@ -177,9 +180,9 @@ app.get('/getsmarttoken', async function (req, res) {
     res.status(200).send(smartTokenArray);
 
   } catch (err) {
-    let errorArr = [{'liquidity' : '100.0000 ATDSM'},{'symbol' : 'ATDSM'},{'marketCap' : '500'}]
-    
-    console.log("inside catch",err)
+    let errorArr = [{ 'liquidity': '100.0000 ATDSM' }, { 'symbol': 'ATDSM' }, { 'marketCap': '500' }]
+
+    console.log("inside catch", err)
     res.status(200).send(errorArr)
   }
 })
@@ -192,7 +195,7 @@ app.get('/getreltoken', async function (req, res) {
     resultR.rows.forEach((rowR) => {
       if (rowR.type == 1) {
         let tokenObj = {};
-        console.log('row',rowR)
+        console.log('row', rowR)
         let res = rowR.supply.split(" ");
         let res3 = rowR.connector2.split(" ");
         let liquidDepth = rowR.supply;
@@ -201,7 +204,7 @@ app.get('/getreltoken', async function (req, res) {
         tokenObj.liquidity = liquidDepth
         tokenObj.symbol = res[1];
         tokenObj.marketCap = marketCap;
-        console.log("tokenbobj",tokenObj)
+        console.log("tokenbobj", tokenObj)
         relTokenArray.push(tokenObj)
       }
     })
@@ -209,9 +212,9 @@ app.get('/getreltoken', async function (req, res) {
     res.status(200).send(relTokenArray);
 
   } catch (err) {
-    let errorRArr = [{'liquidity' : '100.0000 ATDRY'},{'symbol' : 'ATDRY'},{'marketCap' : '100'}]
-    
-    console.log("inside catch",err)
+    let errorRArr = [{ 'liquidity': '100.0000 ATDRY' }, { 'symbol': 'ATDRY' }, { 'marketCap': '100' }]
+
+    console.log("inside catch", err)
     res.status(200).send(errorRArr)
   }
 })
