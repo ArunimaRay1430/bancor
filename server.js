@@ -75,11 +75,15 @@ eos = Eos(config)
     });
   })
 }); */
+app.get('/', function (req, res) {
+  res.status(200).send("hello fron pegDex")
+})
 
 app.post('/', function (req, res) {
   console.log("request body", req.body)
   res.status(200).send(req.body)
 })
+
 
 app.post('/createsmart', async function (req, res) {
   try {
