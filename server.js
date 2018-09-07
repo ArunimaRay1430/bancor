@@ -180,7 +180,7 @@ app.get('/getsmarttoken', async function (req, res) {
     let errorArr = [{'liquidity' : '100.0000 ATDSM'},{'symbol' : 'ATDSM'},{'marketCap' : '500'}]
     
     console.log("inside catch",err)
-    res.status(400).send(errorArr)
+    res.status(200).send(errorArr)
   }
 })
 
@@ -212,7 +212,7 @@ app.get('/getreltoken', async function (req, res) {
     let errorRArr = [{'liquidity' : '100.0000 ATDRY'},{'symbol' : 'ATDRY'},{'marketCap' : '100'}]
     
     console.log("inside catch",err)
-    res.status(400).send(errorRArr)
+    res.status(200).send(errorRArr)
   }
 })
 
