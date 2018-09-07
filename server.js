@@ -180,7 +180,7 @@ app.get('/getsmarttoken', async function (req, res) {
     res.status(200).send(smartTokenArray);
 
   } catch (err) {
-    let errorArr = [{ 'name': 'abcd','price' : '20','liquidity': '100.0000 ATDSM','balance':'2000.0000 EOS' }, { 'symbol': 'ATDSM' }, { 'marketCap': '500' }]
+    let errorArr = [{ 'name': 'abcd','price' : '20','marketCap' : '500','liquidity': '100.0000 ATDSM','balance':'2000.0000 EOS' }, { 'name': 'ijkl','price' : '90','marketCap' : '1000','liquidity': '6985.0000 ATDCET','balance':'7000.0000 EOS' }, { 'name': 'efgh','price' : '40','marketCap' : '700','liquidity': '600.0000 ATDSMT','balance':'2050.0000 EOS' }]
 
     console.log("inside catch", err)
     res.status(200).send(errorArr)
@@ -212,7 +212,7 @@ app.get('/getreltoken', async function (req, res) {
     res.status(200).send(relTokenArray);
 
   } catch (err) {
-    let errorRArr = [{ 'liquidity': '100.0000 ATDRY' }, { 'symbol': 'ATDRY' }, { 'marketCap': '100' }]
+    let errorRArr = [{ 'name': 'kongo','price' : '22','marketCap' : '637','liquidity': '78727.0000 ATDRY','balance':'2500.0000 EOS' }, { 'name': 'valak','price' : '40','marketCap' : '678','liquidity': '8954.0000 ATDREL','balance':'89330.0000 EOS' }, { 'name': 'godzilla','price' : '88','marketCap' : '789','liquidity': '395.0000 ATDIRE','balance':'7880.0000 EOS' }]
 
     console.log("inside catch", err)
     res.status(200).send(errorRArr)
