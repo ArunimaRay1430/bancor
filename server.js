@@ -180,7 +180,7 @@ app.get('/getsmarttoken', async function (req, res) {
     res.status(200).send(smartTokenArray);
 
   } catch (err) {
-    let errorArr = [{ 'liquidity': '100.0000 ATDSM' }, { 'symbol': 'ATDSM' }, { 'marketCap': '500' }]
+    let errorArr = [{ 'name': 'abcd','price' : '20','liquidity': '100.0000 ATDSM','balance':'2000.0000 EOS' }, { 'symbol': 'ATDSM' }, { 'marketCap': '500' }]
 
     console.log("inside catch", err)
     res.status(200).send(errorArr)
