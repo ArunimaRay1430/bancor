@@ -210,9 +210,9 @@ app.get('/getreltoken', async function (req, res) {
     })
     console.log('rel token', relTokenArray)
     res.status(200).send(relTokenArray);
-
+    
   } catch (err) {
-    let errorRArr = [{ 'token': '25458754abc','price' : '22','liquidity': '78727.0000 ATDRY','balance':'2500.0000 EOS' }, { 'token': '2545878954abc','price' : '40','liquidity': '8954.0000 ATDREL','balance':'89330.0000 EOS' }, { 'token': '2545878954abc','price' : '88','liquidity': '395.0000 ATDIRE','balance':'7880.0000 EOS' }]
+    let errorRArr = [{ 'name': '25458754abc','price' : '22','liquidity': '78727.0000 ATDRY','balance':'2500.0000 EOS' }, { 'token': '2545878954abc','price' : '40','liquidity': '8954.0000 ATDREL','balance':'89330.0000 EOS' }, { 'token': '2545878954abc','price' : '88','liquidity': '395.0000 ATDIRE','balance':'7880.0000 EOS' }]
 
     console.log("inside catch", err)
     res.status(200).send(errorRArr)
