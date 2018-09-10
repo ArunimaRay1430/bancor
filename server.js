@@ -172,6 +172,7 @@ app.get('/getsmarttoken', async function (req, res) {
         tokenObj.liquidity = liquidDepth
         tokenObj.symbol = res[1];
         tokenObj.marketCap = marketCap;
+        tokenObj.connectorSymbol = res3[1]
         console.log("tokenbobj", tokenObj)
         smartTokenArray.push(tokenObj)
       }
@@ -197,6 +198,7 @@ app.get('/getreltoken', async function (req, res) {
         let tokenObj = {};
         console.log('row', rowR)
         let res = rowR.supply.split(" ");
+        let res2 = rowR.connector1.split(" ");
         let res3 = rowR.connector2.split(" ");
         let liquidDepth = rowR.supply;
         var marketCap = Number(res3[0]) / rowR.weight;
@@ -204,6 +206,8 @@ app.get('/getreltoken', async function (req, res) {
         tokenObj.liquidity = liquidDepth
         tokenObj.symbol = res[1];
         tokenObj.marketCap = marketCap;
+        tokenObj.connector1Symbol = res2[1]
+        tokenObj.connector2Symbol = res3[1]
         console.log("tokenbobj", tokenObj)
         relTokenArray.push(tokenObj)
       }
