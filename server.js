@@ -211,6 +211,7 @@ app.get('/getreltoken', async function (req, res) {
         tokenObj.marketCap = marketCap1;
         tokenObj.connector1Symbol = res2[1]
         tokenObj.connector2Symbol = res3[1]
+        tokenObj.priceEachToken = price2
         tokenObj.priceEachConn = price2/price1;
         console.log("tokenbobj", tokenObj)
         relTokenArray.push(tokenObj)
