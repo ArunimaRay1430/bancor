@@ -202,8 +202,8 @@ app.get('/getreltoken', async function (req, res) {
         let res2 = rowR.connector1.split(" ");
         let res3 = rowR.connector2.split(" ");
         let liquidDepth = rowR.supply;
-        var marketCap1 = Number(res3[0]) / rowR.weight;
-        var marketCap2 = Number(res2[0]) / rowR.weight;
+        var marketCap1 = Number(res2[0]) / rowR.weight;
+        var marketCap2 = Number(res3[0]) / rowR.weight;
         var price1 = marketCap1 / Number(res[0])
         var price2 = marketCap2 / Number (res[0])
         tokenObj.liquidity = liquidDepth
@@ -211,8 +211,7 @@ app.get('/getreltoken', async function (req, res) {
         tokenObj.marketCap = marketCap1;
         tokenObj.connector1Symbol = res2[1]
         tokenObj.connector2Symbol = res3[1]
-        tokenObj.priceEachConn2 = price1
-        tokenObj.priceEachConn1 = price2
+        tokenObj.priceEachConn = price2/price1;
         console.log("tokenbobj", tokenObj)
         relTokenArray.push(tokenObj)
       }
