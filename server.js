@@ -191,7 +191,7 @@ app.get('/getsmarttoken', async function (req, res) {
 
 app.get('/getreltoken', async function (req, res) {
   try {
-    let resultR = await eos.getTableRows({ code: 'eosiotoken12', scope: 'eosiotoken12', table: 'connector12', json: true, })
+    let resultR = await eos.getTableRows({ code: 'eosiotoken12', scope: 'eosiotoken12', table: 'connector12', limit : 50, json: true, })
 
     let relTokenArray = []
     resultR.rows.forEach((rowR) => {
