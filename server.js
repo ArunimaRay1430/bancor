@@ -6,16 +6,23 @@ var cors = require('cors')
 
 const app = express();
 app.options('*', cors()) // include before other routes
-//app.use(cors())
+app.use(cors())
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+  });
+  app.all('/', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next()
+  });
+  
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
-/* app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-  }); */
+
 
 Eos = require('eosjs')
 
@@ -30,11 +37,6 @@ config = {
   sign: true
 }
 
-app.all('/', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next()
-});
 
 eos = Eos(config)
 /* var request = require("request");
@@ -196,7 +198,7 @@ app.get('/getsmarttoken', async function (req, res) {
         console.log('row', rowR)
         let res = rowR.supply.split(" ");
         let res3 = rowR.connector1.split(" ");
-        let liquidDepth = rowR.supply;
+        let liquidDepth = res[0];
         var marketCap = Number(res3[0]) / rowR.weight;
         var price = marketCap / Number(res[0])
         tokenObj.liquidity = liquidDepth
@@ -231,7 +233,7 @@ app.get('/getreltoken', async function (req, res) {
         let res = rowR.supply.split(" ");
         let res2 = rowR.connector1.split(" ");
         let res3 = rowR.connector2.split(" ");
-        let liquidDepth = rowR.supply;
+        let liquidDepth = res[0];
         var marketCap1 = Number(res2[0]) / rowR.weight;
         var marketCap2 = Number(res3[0]) / rowR.weight;
         var price1 = marketCap1 / Number(res[0])
