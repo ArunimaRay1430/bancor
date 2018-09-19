@@ -5,10 +5,11 @@ var cors = require('cors')
 
 
 const app = express();
-app.use(cors())
+app.options('*', cors()) // include before other routes
+//app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.options('*', cors()) // include before other routes
+
 
 /* app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
