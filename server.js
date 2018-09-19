@@ -28,15 +28,14 @@ config = {
   sign: true
 }
 
-app.use(function(req, res, next) {
+app.all('/', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  next();
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next()
 });
 
 eos = Eos(config)
-var request = require("request");
+/* var request = require("request");
 
 var options = { method: 'POST',
   url: 'http://193.93.219.219:8888/v1/chain/get_currency_balance',
@@ -50,7 +49,7 @@ request(options, function (error, response, body) {
   if (error) throw new Error(error);
  // console.log(response);
   console.log(body);
-});
+}); */
 
 /* app.get('/chain', function(req, res) {
   eos.getInfo((error, result) => { 
