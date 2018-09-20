@@ -2,7 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser')
 var cors = require('cors')
-
+var request = require("request");
 
 const app = express();
 app.options('*', cors()) // include before other routes
@@ -62,54 +62,7 @@ request(options, function (error, response, body) {
   })
 });  */
 
-/* app.get('/getsmarttoken', function (req, res) {
-  eos.getInfo((error, result) => {
 
-    eos.getTableRows({
-      code: 'eosiotoken12',
-      scope: 'eosiotoken12',
-      table: 'configs13',
-      json: true,
-    }).then(function (result) {
-      let smartTokenArray = []
-      smartTokenArray.l
-      //console.log(result.rows[0].tokensym);
-      result.rows.forEach((row) => {
-        if (row.type == 0) {
-          smartTokenArray.push(row.tokensym)
-
-        }
-
-        console.log(row)
-      })
-
-      res.status(200).send(smartTokenArray);
-
-    });
-  })
-}); */
-
-/* app.get('/getreltoken', function (req, res) {
-  eos.getInfo((error, result) => {
-    eos.getTableRows({
-      code: 'eosiotoken12',
-      scope: 'eosiotoken12',
-      table: 'configs13',
-      json: true,
-    }).then(function (result) {
-      let relTokenArray = []
-      //console.log(result.rows[0].tokensym);
-      result.rows.forEach((row) => {
-        if (row.type == 1) {
-          relTokenArray.push(row.tokensym)
-        }
-        console.log(row)
-      })
-      res.status(200).send(relTokenArray);
-
-    });
-  })
-}); */
 app.get('/', function (req, res) {
   res.status(200).send("hello fron pegDex")
 })
@@ -206,6 +159,7 @@ app.get('/getsmarttoken', async function (req, res) {
         tokenObj.marketCap = marketCap;
         tokenObj.connectorSymbol = res3[1]
         tokenObj.priceEachToken = price
+        tokenObj.connector1Address = rowR.accaddress1;
         console.log("tokenbobj", tokenObj)
         smartTokenArray.push(tokenObj)
       }
@@ -245,6 +199,8 @@ app.get('/getreltoken', async function (req, res) {
         tokenObj.connector2Symbol = res3[1]
         tokenObj.priceEachToken = price2
         tokenObj.priceEachConn = price2/price1;
+        tokenObj.connector1Address = rowR.accaddress1;
+        tokenObj.connector2Address = rowR.accaddress2;
         console.log("tokenbobj", tokenObj)
         relTokenArray.push(tokenObj)
       }
@@ -259,9 +215,74 @@ app.get('/getreltoken', async function (req, res) {
     res.status(200).send(errorRArr)
   }
 })
+app.get('/getbal', async function (req, res) {
+  try {
+    let resultR = await eos.getTableRows({ code: 'eosatidiumio', scope: 'smartcreate1', table: 'accounts', limit : 50, json: true, })
+
+    let bal = []
+    resultR.rows.forEach((rowR) => {
+      console.log('row', rowR)
+      let res = rowR.balance.split(" ");
+      if (res[1] == 'ATDI') {
+        let token = {};
+        console.log('row', rowR)
+        
+        token.bal = rowR.balance;
+        
+        console.log("tokenbobj", token)
+        bal.push(token)
+       
+
+      }
+    })
+    console.log('rel token', bal)
+    res.status(200).send(bal);
+    
+  } catch (err) {
+    let errorRArr = [{ 'name': '25458754abc','price' : '22','liquidity': '78727.0000 ATDRY','balance':'2500.0000 EOS' }, { 'token': '2545878954abc','price' : '40','liquidity': '8954.0000 ATDREL','balance':'89330.0000 EOS' }, { 'token': '2545878954abc','price' : '88','liquidity': '395.0000 ATDIRE','balance':'7880.0000 EOS' }]
+
+    console.log("inside catch", err)
+    res.status(200).send(errorRArr)
+  }
+})
 
 
+/* app.get('/getbal', async function (req, res) {
+  
+  try {
+    
+    var options = { method: 'POST',
+  url: 'http://193.93.219.219:8888/v1/chain/get_currency_balance',
+  body: 
+   { code: 'eosatidiumio',
+     account: 'smartcreate1',
+     symbol: 'ATDI' },
+  json: true };
 
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+ // console.log(response);
+  console.log(body);
+  bal.push(body);
+  token.bal = 'hello'
+  console.log("bal[]--",bal)
+  //body.send(bal);
+  //console.log(request.get((options)))
+  
+  //request.send()
+});
+
+console.log("bal[]--outside-",bal)
+console.log("token[]--outside-",token)
+//res.status(200).send(bal[0]);
+
+  } catch (err) {
+    
+
+    console.log("inside catch", err)
+    //res.status(200).send(errorArr)
+  }
+}) */
 
 
 
