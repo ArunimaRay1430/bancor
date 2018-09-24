@@ -3,21 +3,22 @@ const express = require('express');
 const bodyParser = require('body-parser')
 var cors = require('cors')
 var request = require("request");
+//import { pow } from './math';
 
 const app = express();
 app.options('*', cors()) // include before other routes
 app.use(cors())
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
-  });
-  app.all('/', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    next()
-  });
-  
+});
+app.all('/', function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next()
+});
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -142,7 +143,8 @@ app.post('/createrel', async function (req, res) {
 
 app.get('/getsmarttoken', async function (req, res) {
   try {
-    let resultR = await eos.getTableRows({ code: 'eosiotoken12', scope: 'eosiotoken12', table: 'connector12',limit : 50, json: true, })
+    let resultR = await eos.getTableRows({ code: 'eosiotoken12', scope: 'eosiotoken12', table: 'connector12', limit: 50, json: true, })
+
 
     let smartTokenArray = []
     resultR.rows.forEach((rowR) => {
@@ -158,8 +160,13 @@ app.get('/getsmarttoken', async function (req, res) {
         tokenObj.symbol = res[1];
         tokenObj.marketCap = marketCap;
         tokenObj.connectorSymbol = res3[1]
-        tokenObj.priceEachToken = price
+
         tokenObj.connector1Address = rowR.accaddress1;
+
+
+        var E = -Number(res[0]) * (1 - Math.pow(1 + 1.0000 / (Number(res3[0]) + 1), Number(rowR.weight)));
+        console.log("unit price--", E)
+        tokenObj.priceEachToken = E
         console.log("tokenbobj", tokenObj)
         smartTokenArray.push(tokenObj)
       }
@@ -168,7 +175,7 @@ app.get('/getsmarttoken', async function (req, res) {
     res.status(200).send(smartTokenArray);
 
   } catch (err) {
-    let errorArr = [{ 'name': 'abcd','price' : '20','marketCap' : '500','liquidity': '100.0000 ATDSM','balance':'2000.0000 EOS' }, { 'name': 'ijkl','price' : '90','marketCap' : '1000','liquidity': '6985.0000 ATDCET','balance':'7000.0000 EOS' }, { 'name': 'efgh','price' : '40','marketCap' : '700','liquidity': '600.0000 ATDSMT','balance':'2050.0000 EOS' }]
+    let errorArr = [{ 'name': 'abcd', 'price': '20', 'marketCap': '500', 'liquidity': '100.0000 ATDSM', 'balance': '2000.0000 EOS' }, { 'name': 'ijkl', 'price': '90', 'marketCap': '1000', 'liquidity': '6985.0000 ATDCET', 'balance': '7000.0000 EOS' }, { 'name': 'efgh', 'price': '40', 'marketCap': '700', 'liquidity': '600.0000 ATDSMT', 'balance': '2050.0000 EOS' }]
 
     console.log("inside catch", err)
     res.status(200).send(errorArr)
@@ -177,7 +184,7 @@ app.get('/getsmarttoken', async function (req, res) {
 
 app.get('/getreltoken', async function (req, res) {
   try {
-    let resultR = await eos.getTableRows({ code: 'eosiotoken12', scope: 'eosiotoken12', table: 'connector12', limit : 50, json: true, })
+    let resultR = await eos.getTableRows({ code: 'eosiotoken12', scope: 'eosiotoken12', table: 'connector12', limit: 50, json: true, })
 
     let relTokenArray = []
     resultR.rows.forEach((rowR) => {
@@ -191,14 +198,14 @@ app.get('/getreltoken', async function (req, res) {
         var marketCap1 = Number(res2[0]) / rowR.weight;
         var marketCap2 = Number(res3[0]) / rowR.weight;
         var price1 = marketCap1 / Number(res[0])
-        var price2 = marketCap2 / Number (res[0])
+        var price2 = marketCap2 / Number(res[0])
         tokenObj.liquidity = liquidDepth
         tokenObj.symbol = res[1];
         tokenObj.marketCap = marketCap1;
         tokenObj.connector1Symbol = res2[1]
         tokenObj.connector2Symbol = res3[1]
         tokenObj.priceEachToken = price2
-        tokenObj.priceEachConn = price2/price1;
+        tokenObj.priceEachConn = price2 / price1;
         tokenObj.connector1Address = rowR.accaddress1;
         tokenObj.connector2Address = rowR.accaddress2;
         console.log("tokenbobj", tokenObj)
@@ -207,9 +214,9 @@ app.get('/getreltoken', async function (req, res) {
     })
     console.log('rel token', relTokenArray)
     res.status(200).send(relTokenArray);
-    
+
   } catch (err) {
-    let errorRArr = [{ 'name': '25458754abc','price' : '22','liquidity': '78727.0000 ATDRY','balance':'2500.0000 EOS' }, { 'token': '2545878954abc','price' : '40','liquidity': '8954.0000 ATDREL','balance':'89330.0000 EOS' }, { 'token': '2545878954abc','price' : '88','liquidity': '395.0000 ATDIRE','balance':'7880.0000 EOS' }]
+    let errorRArr = [{ 'name': '25458754abc', 'price': '22', 'liquidity': '78727.0000 ATDRY', 'balance': '2500.0000 EOS' }, { 'token': '2545878954abc', 'price': '40', 'liquidity': '8954.0000 ATDREL', 'balance': '89330.0000 EOS' }, { 'token': '2545878954abc', 'price': '88', 'liquidity': '395.0000 ATDIRE', 'balance': '7880.0000 EOS' }]
 
     console.log("inside catch", err)
     res.status(200).send(errorRArr)
@@ -217,7 +224,7 @@ app.get('/getreltoken', async function (req, res) {
 })
 app.get('/getbal', async function (req, res) {
   try {
-    let resultR = await eos.getTableRows({ code: 'eosatidiumio', scope: 'smartcreate1', table: 'accounts', limit : 50, json: true, })
+    let resultR = await eos.getTableRows({ code: 'eosatidiumio', scope: 'smartcreate1', table: 'accounts', limit: 50, json: true, })
 
     let bal = []
     resultR.rows.forEach((rowR) => {
@@ -226,20 +233,20 @@ app.get('/getbal', async function (req, res) {
       if (res[1] == 'ATDI') {
         let token = {};
         console.log('row', rowR)
-        
+
         token.bal = rowR.balance;
-        
+
         console.log("tokenbobj", token)
         bal.push(token)
-       
+
 
       }
     })
     console.log('rel token', bal)
     res.status(200).send(bal);
-    
+
   } catch (err) {
-    let errorRArr = [{ 'name': '25458754abc','price' : '22','liquidity': '78727.0000 ATDRY','balance':'2500.0000 EOS' }, { 'token': '2545878954abc','price' : '40','liquidity': '8954.0000 ATDREL','balance':'89330.0000 EOS' }, { 'token': '2545878954abc','price' : '88','liquidity': '395.0000 ATDIRE','balance':'7880.0000 EOS' }]
+    let errorRArr = [{ 'name': '25458754abc', 'price': '22', 'liquidity': '78727.0000 ATDRY', 'balance': '2500.0000 EOS' }, { 'token': '2545878954abc', 'price': '40', 'liquidity': '8954.0000 ATDREL', 'balance': '89330.0000 EOS' }, { 'token': '2545878954abc', 'price': '88', 'liquidity': '395.0000 ATDIRE', 'balance': '7880.0000 EOS' }]
 
     console.log("inside catch", err)
     res.status(200).send(errorRArr)
