@@ -160,6 +160,8 @@ app.get('/getsmarttoken', async function (req, res) {
         tokenObj.symbol = res[1];
         tokenObj.marketCap = marketCap;
         tokenObj.connectorSymbol = res3[1]
+        tokenObj.connAmount = rowR.connector1
+        tokenObj.weight = rowR.weight
 
         tokenObj.connector1Address = rowR.accaddress1;
 
