@@ -207,14 +207,24 @@ app.get('/getreltoken', async function (req, res) {
         tokenObj.connector1Symbol = res2[1]
         tokenObj.connector2Symbol = res3[1]
         tokenObj.priceEachToken = price2
-        tokenObj.priceEachConn = price2 / price1;
+        // tokenObj.priceEachConn = price2 / price1;
         tokenObj.connector1Address = rowR.accaddress1;
         tokenObj.connector2Address = rowR.accaddress2;
-        console.log("tokenbobj", tokenObj)
+        tokenObj.conn1Amount = res2[0]
+        tokenObj.conn2Amount = res3[0]
+
+        var E = -Number(res[0]) * (1 - Math.pow(1 + 1.0000 / (Number(res2[0]) + 1), Number(rowR.weight)));
+        var T = Number(res3[0]) * (Math.pow(1 + E / Number(res[0]), (1 / Number(rowR.weight))) - 1);
+        tokenObj.priceATDItoCET = T;
+        console.log("-----ATDI", E)
+        console.log("unit price--CET", T)
+        console.log("token symnol-", tokenObj.symbol)
+
+        // console.log("tokenbobj", tokenObj)
         relTokenArray.push(tokenObj)
       }
     })
-    console.log('rel token', relTokenArray)
+    // console.log('rel token', relTokenArray)
     res.status(200).send(relTokenArray);
 
   } catch (err) {
